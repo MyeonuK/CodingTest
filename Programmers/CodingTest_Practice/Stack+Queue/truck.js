@@ -13,19 +13,7 @@ function solution(bridge_length, weight, truck_weights) {
         truckWeight += truck_weights[w];
     }
 
-    temp = truck_weights.shift();
-    bridgeQueue[0].push(temp);
-    bridgeQueue[1].push(bridge_length);
-    bridgeWeight += temp;
-    truckWeight -= temp;
-    truckNum++;
-    answer++;
-
     while (bridgeWeight != 0 || truckWeight != 0) {
-        for (let i = 0; i < bridgeQueue[1].length; i++) {
-            bridgeQueue[1][i]--;
-        }
-
         if (bridgeQueue[1][0] == 0) {
             bridgeWeight -= bridgeQueue[0].shift();
             bridgeQueue[1].shift();
@@ -40,7 +28,17 @@ function solution(bridge_length, weight, truck_weights) {
             truckWeight -= temp;
             truckNum++;
         }
+        else if (truckWeight) {
+            temp = bridgeQueue[1][0] - 1;
+            for (let i in bridgeQueue[1]) {
+                bridgeQueue[1][i] -= temp;
+            }
+            answer += temp;
+        }
 
+        for (let i in bridgeQueue[1]) {
+            bridgeQueue[1][i]--;
+        }
 
         answer++;
     }
